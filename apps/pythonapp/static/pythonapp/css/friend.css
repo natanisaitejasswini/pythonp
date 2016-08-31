@@ -1,0 +1,45 @@
+*{
+margin: 0px;
+padding: 0px;
+font-family: sans-serif;
+}
+body{
+height: 900px;
+width: 900px;
+margin-left: 40px;
+margin-top: 40px;
+padding-left: 20px;
+padding-top: 20px;
+}
+.move{
+margin-left: 300px;
+}
+.red{
+margin-left: 60px;
+color: red;
+}
+table {
+margin-left: 50px;
+border-collapse: collapse;
+}
+td, th {
+border: 1px solid black;
+text-align: left;
+padding-left: 6px;
+}
+tr:nth-child(even){
+background-color: #dddddd;
+}
+input[type=submit]{
+height: 20px;
+width: 130px;
+margin-top: 5px;
+margin-bottom: 5px;
+margin-left: 10px;
+margin-right: 10px;
+color: blue;
+border: black;
+}
+.box{
+border: 1px solid black;
+}
