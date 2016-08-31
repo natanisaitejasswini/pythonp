@@ -1,21 +1,21 @@
 from django.shortcuts import render,redirect, HttpResponse
 from .models import Userlog
 from ..pythonapp.models import Pokes
-from django.core.urlresolvers import reverse
 from django.contrib import messages
 from datetime import datetime
 import bcrypt
+from django.db.models import Count, Sum
+
 def index(request):
 	return render(request,'loginapp/index.html')
 def success(request):
 	context = {
-		'user'	: Userlog.objects.get(id= request.session['user']),
-		"users" : Userlog.objects.exclude( id = request.session['user']),
-		"pokes" : Pokes.objects.all(),
-		'pokable': Pokes.objects.all().exclude(id=request.session['user']),
-		"poker"	: Pokes.objects.filter(userpoked = request.session['user'])
+		'user_ses': Userlog.objects.get(id=request.session['user']),
+		'yours': Pokes.objects.filter(user=request.session['user']),
+		'other_pokes': Userlog.objects.exclude(id=request.session['user']).annotate(counter=Sum("user2__poked")),
+		'total': Pokes.objects.filter(user=request.session['user'])
 	}
-
+	print context['total']
  	return render(request,'pythonapp/success.html',context)
 def user(request):
 	errors = False

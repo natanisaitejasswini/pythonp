@@ -8,52 +8,43 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
   </head>
-  <body>
-    <div>
-      <form action='/logout' method = 'post'>
-        {% csrf_token %}
-         <input type='submit' value='Logout'>
-    </form>
-    <h1>Welcome{{user.name}}</h1><br>
-    <h4>{{ pokes.count }} people poked you!</h4>
-    <p>Count People Poked You!</p>
-    <div class = 'box'>
-      {% for friend in pokes%}
-      <p>{{ friend.userpoked.name }}</p>
-      <p>{{friend.poked}}</p>
+ <body>
+    <p><a href="/logout" class='move'><u>Logout</u></a></p>
+    <h3>Welcome, {{user_ses.alias}}</h3>
+    <p>{{total.count}} people poked you!</p>
+
+    <div class="box">
+      {% for your_poke in yours %}
+        <p>{{your_poke.userpoked.alias}} gave you
+        {{your_poke.poked}} pokes(s).</p>
       {% endfor %}
     </div>
-    <table>
-    <thead>
-    <br>
-      <h2>People You may want to poke</h2><br>
-        <tr>
-          <th>Name </th>
-          <th>Alias </th>
-          <th>Email Address  </th>
-          <th>Poke History </th>
-          <th>Action </th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for friend in users %}
-          <tr>
-          <td>{{friend.name}}</td>
-          <td>{{friend.alias}}</td>
-          <td>{{friend.email}}</td>
-          <td>{{pokable.count}}</td>
-          <td><form action="/poke/{{ friend.id }}" method="post">
-             {% csrf_token %}
-             <input type="submit" value ="Poke!">
-             </form>
-             </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-     </table>
-     <br><br>
-  </div>
-</body>
-</html>
 
+    <h5>People you may want to poke:</h5>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Alias</th>
+        <th>Email Address</th>
+        <th>Poke History</th>
+        <th>Action</th>
+      </tr>
+      {% for other in other_pokes %}
+      <tr>
+        <td>{{other.name}}</td>
+        <td>{{other.alias}}</td>
+        <td>{{other.email}}</td>
+        <td>{{other.counter}}</td>
+        <td>
+          <form action="/poke" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="userpoked" value="{{other.id}}">
+            <input type="submit" value="Poke!">
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
   
