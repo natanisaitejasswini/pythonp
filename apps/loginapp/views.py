@@ -11,7 +11,7 @@ def index(request):
 def success(request):
 	context = {
 		'user_ses': Userlog.objects.get(id=request.session['user']),
-		'yours': Pokes.objects.filter(user=request.session['user']),
+		'yours': Pokes.objects.filter(user=request.session['user']).order_by('-poked'),
 		'other_pokes': Userlog.objects.exclude(id=request.session['user']).annotate(counter=Sum("user2__poked")),
 		'total': Pokes.objects.filter(user=request.session['user'])
 	}
@@ -54,7 +54,7 @@ def user(request):
 	    messages.add_message(request, messages.INFO, "This username already existed!", extra_tags="regtag")
 	# Errors Route
 	if errors == True:
-		return redirect('/')
+		return redirect('/main')
 	elif (check1[0] == True & check2[0] == True  & check3[0] == True & check5[0] == True & check6[0] == True):
 		user = Userlog.UserManager.create(name=check1[1], alias=check2[1], password=check3[1], birthday=check5[1], email=check6[1])
 		request.session['user'] = user.id
@@ -65,7 +65,7 @@ def login(request):
 	check7 = Userlog.UserManager.log(request.POST['email'], request.POST['password'])
 	if check7[0] == False:
 		messages.add_message(request, messages.INFO, check7[1], extra_tags='logtag')
-		return redirect('/')
+		return redirect('/main')
 	else:
 		request.session['user'] = check7[1].id
 		return redirect('/pokes')
@@ -75,7 +75,7 @@ def logout(request):
 		request.session.clear()
 	except:
 		pass
-	return redirect('/')
+	return redirect('/main')
 
 
 
